@@ -14,7 +14,19 @@ export default defineNuxtConfig({
   redirectOptions: {
     login: '/login',
     callback: '/confirm',
-    exclude: ['/i/*', '/'],
+    exclude: ['/i/*', '/', '/login', '/confirm'],
+  },
+  cookieOptions: {
+    maxAge: 60 * 60 * 24 * 7,
+    sameSite: 'lax',
+    secure: false,
+  },
+  clientOptions: {
+    auth: {
+      flowType: 'pkce',
+      detectSessionInUrl: true,
+      persistSession: true,
+    },
   },
 },
   pwa: {
@@ -62,4 +74,5 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
+  css: ['~/assets/css/main.css'],
 })

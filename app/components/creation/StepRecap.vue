@@ -134,7 +134,7 @@ async function generer() {
   loading.value = true
   error.value = ''
 
-  const result = await $fetch('/api/image/generate', {
+ const result = await $fetch<{ image_url: string }>('/api/image/generate', {
     method: 'POST',
     body: {
       prompt: promptImage.value,
@@ -175,18 +175,18 @@ async function validerEtPayer() {
     .from('evenements')
     .insert({
       user_id: user.value!.id,
-      type: store.state.type,
-      titre: store.state.titre,
-      date_evenement: store.state.date_evenement,
-      lieu: store.state.lieu,
-      nombre_invites: store.state.nombre_invites,
-      description: store.state.description,
-      theme: store.state.theme,
-      couleurs: store.state.couleurs,
-      langue: store.state.langue,
-      brief_genere: store.state.brief_genere,
-      image_url: store.state.image_url,
-      modifications_count: store.state.modifications_count,
+      type: store.state.type ?? '',
+      titre: store.state.titre ?? '',
+      date_evenement: store.state.date_evenement ?? '',
+      lieu: store.state.lieu ?? '',
+      nombre_invites: store.state.nombre_invites ?? 0,
+      description: store.state.description ?? '',
+      theme: store.state.theme ?? '',
+      couleurs: store.state.couleurs ?? [],
+      langue: store.state.langue ?? 'fr',
+      brief_genere: store.state.brief_genere ?? '',
+      image_url: store.state.image_url ?? '',
+      modifications_count: store.state.modifications_count ?? 0,
       statut: 'brouillon',
       prix_base: store.prixEstime,
       prix_final: store.prixEstime,
