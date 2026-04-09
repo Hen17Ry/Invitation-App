@@ -14,7 +14,19 @@ export default defineNuxtConfig({
   redirectOptions: {
     login: '/login',
     callback: '/confirm',
-    exclude: ['/i/*', '/'],
+    exclude: ['/i/*', '/', '/login', '/confirm'],
+  },
+  cookieOptions: {
+    maxAge: 60 * 60 * 24 * 7,
+    sameSite: 'lax',
+    secure: false,
+  },
+  clientOptions: {
+    auth: {
+      flowType: 'pkce',
+      detectSessionInUrl: true,
+      persistSession: true,
+    },
   },
 },
   pwa: {
@@ -48,11 +60,16 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    auth0ClientSecret: process.env.AUTH0_CLIENT_SECRET,
     openrouterApiKey: process.env.OPENROUTER_API_KEY,
     anthropicApiKey: process.env.ANTHROPIC_API_KEY,
     falApiKey: process.env.FAL_API_KEY,
     kkiapayPrivateKey: process.env.KKIAPAY_PRIVATE_KEY,
     public: {
+      auth0Domain: process.env.AUTH0_DOMAIN,
+      auth0ClientId: process.env.AUTH0_CLIENT_ID,
+      auth0Audience: process.env.AUTH0_AUDIENCE,
+      auth0CallbackUrl: process.env.AUTH0_CALLBACK_URL,
       supabaseUrl: process.env.SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY,
       kkiapayPublicKey: process.env.KKIAPAY_PUBLIC_KEY,
@@ -62,4 +79,5 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
+  css: ['~/assets/css/main.css'],
 })
