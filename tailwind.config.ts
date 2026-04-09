@@ -17,8 +17,8 @@ export default {
         dark:      '#1C1A17',
       },
       fontFamily: {
-        serif:  ['Noto Serif', 'serif'],
-        sans:   ['Plus Jakarta Sans', 'sans-serif'],
+        serif: ['Noto Serif', 'serif'],
+        sans:  ['Plus Jakarta Sans', 'sans-serif'],
       },
     },
   },

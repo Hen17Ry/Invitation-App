@@ -136,7 +136,6 @@
 
                 <button
                   type="button"
-                  @click="loginWithGoogle"
                   :disabled="loading"
                   class="flex h-[64px] w-full items-center justify-center gap-4 rounded-[18px] bg-white text-[#17130f] text-[1.05rem] font-medium shadow-[0_1px_0_rgba(0,0,0,0.04)] border border-[#eee4d7] disabled:opacity-60"
                 >
@@ -156,7 +155,7 @@
                   <div class="h-px flex-1 bg-[#eadfce]"></div>
                 </div>
 
-                <form class="space-y-6" @submit.prevent="handleEmailLogin">
+                <form class="space-y-6">
                   <div>
                     <label class="mb-3 block text-[#3b342d] text-[0.98rem] font-semibold uppercase">
                       Adresse email
@@ -264,7 +263,6 @@
 
                 <button
                   type="button"
-                  @click="loginWithGoogle"
                   :disabled="loading"
                   class="flex h-[64px] w-full items-center justify-center gap-4 rounded-[18px] bg-white text-[#17130f] text-[1.05rem] font-medium shadow-[0_1px_0_rgba(0,0,0,0.04)] border border-[#eee4d7] disabled:opacity-60"
                 >
@@ -284,7 +282,7 @@
                   <div class="h-px flex-1 bg-[#eadfce]"></div>
                 </div>
 
-                <form class="space-y-6" @submit.prevent="handleRegister">
+                <form class="space-y-6">
                   <div>
                     <label class="mb-3 block text-[#3b342d] text-[0.98rem] font-semibold uppercase">
                       Nom complet
@@ -412,115 +410,27 @@
 </template>
 
 <script setup lang="ts">
+
 definePageMeta({ layout: false })
 
-const supabase = useSupabaseClient()
-
+const router = useRouter()
 const activeTab = ref<'login' | 'register'>('login')
 const loading = ref(false)
 const error = ref('')
-
 const showLoginPassword = ref(false)
 const showRegisterPassword = ref(false)
+const loginForm = ref({ email: '', password: '' })
+const registerForm = ref({ fullName: '', email: '', password: '', confirmPassword: '' })
 
-const loginForm = ref({
-  email: '',
-  password: '',
-})
 
-const registerForm = ref({
-  fullName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-})
+
 
 function switchTab(tab: 'login' | 'register') {
   activeTab.value = tab
   error.value = ''
 }
 
-async function loginWithGoogle() {
-  loading.value = true
-  error.value = ''
 
-  const { error: err } = await supabase.auth.signInWithOAuth({
-    provider: 'google',
-    options: {
-      redirectTo: `${window.location.origin}/confirm`,
-    },
-  })
-
-  if (err) {
-    error.value = 'Erreur de connexion. Réessayez.'
-    loading.value = false
-  }
-}
-
-async function handleEmailLogin() {
-  loading.value = true
-  error.value = ''
-
-  const { error: err } = await supabase.auth.signInWithPassword({
-    email: loginForm.value.email,
-    password: loginForm.value.password,
-  })
-
-  if (err) {
-    error.value = 'Email ou mot de passe incorrect.'
-    loading.value = false
-    return
-  }
-
-  await navigateTo('/dashboard')
-}
-
-async function handleRegister() {
-  error.value = ''
-
-  if (!registerForm.value.fullName.trim()) {
-    error.value = 'Veuillez entrer votre nom complet.'
-    return
-  }
-
-  if (!registerForm.value.email.trim()) {
-    error.value = 'Veuillez entrer votre adresse email.'
-    return
-  }
-
-  if (registerForm.value.password.length < 6) {
-    error.value = 'Le mot de passe doit contenir au moins 6 caractères.'
-    return
-  }
-
-  if (registerForm.value.password !== registerForm.value.confirmPassword) {
-    error.value = 'Les mots de passe ne correspondent pas.'
-    return
-  }
-
-  loading.value = true
-
-  const { error: err } = await supabase.auth.signUp({
-    email: registerForm.value.email,
-    password: registerForm.value.password,
-    options: {
-      data: {
-        full_name: registerForm.value.fullName,
-      },
-      emailRedirectTo: `${window.location.origin}/confirm`,
-    },
-  })
-
-  loading.value = false
-
-  if (err) {
-    error.value = "Impossible de créer le compte. Réessayez."
-    return
-  }
-
-  error.value = ''
-  await navigateTo('/confirm')
-}
 </script>
 
 <style scoped>
