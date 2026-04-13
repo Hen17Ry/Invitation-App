@@ -15,12 +15,13 @@
           v-for="link in navLinks"
           :key="link.label"
           :to="link.href"
+          @click="activeSection = link.section"
           class="relative text-[0.9rem] font-medium text-[#2c2723] transition-colors hover:text-[#c9952f]"
-          :class="link.active ? 'text-[#c9952f]' : ''"
+          :class="activeSection === link.section ? 'text-[#c9952f]' : ''"
         >
           {{ link.label }}
           <span
-            v-if="link.active"
+            v-if="activeSection === link.section"
             class="absolute left-0 right-0 -bottom-[10px] h-[2px] bg-[#c9952f] rounded-full"
           ></span>
         </NuxtLink>
@@ -66,9 +67,9 @@
             v-for="link in navLinks"
             :key="link.label"
             :to="link.href"
-            @click="menuOpen = false"
+            @click="activeSection = link.section; menuOpen = false"
             class="block text-[0.9rem] font-medium transition-colors"
-            :class="link.active ? 'text-[#c9952f]' : 'text-[#2c2723]'"
+            :class="activeSection === link.section ? 'text-[#c9952f]' : 'text-[#2c2723]'"
           >
             {{ link.label }}
           </NuxtLink>
@@ -95,13 +96,50 @@
 import { ref } from 'vue'
 
 const menuOpen = ref(false)
+const activeSection = ref('fonctionnalites')
+let sectionObserver: IntersectionObserver | null = null
 
 const navLinks = [
-  { label: 'Fonctionnalités', href: '#fonctionnalites', active: true },
-  { label: 'Tarifs', href: '#tarifs', active: false },
-  { label: 'Comment ça marche', href: '#etapes', active: false },
-  { label: 'À propos', href: '#apropos', active: false },
+  { label: 'Fonctionnalités', href: '#fonctionnalites', section: 'fonctionnalites' },
+  { label: 'Tarifs', href: '#tarifs', section: 'tarifs' },
+  { label: 'Comment ça marche', href: '#etapes', section: 'etapes' },
+  { label: 'À propos', href: '#apropos', section: 'apropos' },
 ]
+
+onMounted(() => {
+  const sections = navLinks
+    .map((link) => document.getElementById(link.section))
+    .filter((section): section is HTMLElement => section !== null)
+
+  if (!sections.length) return
+
+  sectionObserver = new IntersectionObserver(
+    (entries) => {
+      const visibleEntries = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
+
+      if (!visibleEntries.length) return
+
+      const sectionId = visibleEntries[0].target.getAttribute('id')
+      if (sectionId) {
+        activeSection.value = sectionId
+      }
+    },
+    {
+      rootMargin: '-25% 0px -55% 0px',
+      threshold: [0.2, 0.35, 0.5, 0.7],
+    }
+  )
+
+  for (const section of sections) {
+    sectionObserver.observe(section)
+  }
+})
+
+onUnmounted(() => {
+  sectionObserver?.disconnect()
+})
 </script>
 
 <style scoped>

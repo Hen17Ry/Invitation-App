@@ -1,5 +1,5 @@
 <template>
-  <footer class="bg-[#1a0d08] text-white pt-12 pb-8">
+  <footer id="apropos" class="bg-[#1a0d08] text-white pt-12 pb-8">
     <div class="max-w-[1400px] mx-auto px-6 sm:px-8 lg:px-10">
       <!-- Top -->
       <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-y-8 gap-x-12 pb-10">
