@@ -17,15 +17,18 @@
           <h2
             class="font-serif text-center text-[3.2rem] leading-[0.95] tracking-[-0.04em] font-medium text-[#f7f2ec]"
           >
-            Votre
-            <br />
-            évènement
-            <br />
-            commence ici.
+            <span class="whitespace-pre-line">{{ heroTypedText }}</span>
+            <span v-if="showHeroCursor" class="typing-cursor" aria-hidden="true"></span>
           </h2>
 
-          <div class="mt-8 rotate-[-4deg]">
-            <div class="w-[260px] rounded-[14px] bg-[#f8f4ee] p-4 shadow-[0_25px_60px_rgba(0,0,0,0.35)]">
+          <div class="mt-8 rotate-[-4deg] [perspective:1400px]">
+            <div
+              ref="previewCardRef"
+              class="login-preview-card w-[260px] rounded-[14px] bg-[#f8f4ee] p-4 shadow-[0_25px_60px_rgba(0,0,0,0.35)]"
+              :style="previewCardStyle"
+              @mousemove="handlePreviewCardMove"
+              @mouseleave="resetPreviewCard"
+            >
               <div class="border border-dashed border-[#e5ddd0] px-5 py-8 text-center">
                 <div class="mb-5 text-[#99630d] text-[1.4rem]">✦</div>
 
@@ -326,6 +329,12 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 
+const heroFullText = 'Votre\névènement\ncommence ici.'
+const heroTypedText = ref('')
+const showHeroCursor = ref(true)
+const previewCardRef = ref<HTMLElement | null>(null)
+const previewRotateX = ref(0)
+const previewRotateY = ref(0)
 const activeTab = ref<'login' | 'register'>('login')
 const loading = ref(false)
 const error = ref('')
@@ -333,6 +342,48 @@ const showLoginPassword = ref(false)
 const showRegisterPassword = ref(false)
 const loginForm = ref({ email: '', password: '' })
 const registerForm = ref({ fullName: '', email: '', password: '', confirmPassword: '' })
+let heroTypingTimer: number | null = null
+
+const previewCardStyle = computed(() => ({
+  transform: `rotateX(${previewRotateX.value}deg) rotateY(${previewRotateY.value}deg) translateY(-6px) scale(1.01)`,
+}))
+
+onMounted(() => {
+  let index = 0
+  heroTypingTimer = window.setInterval(() => {
+    heroTypedText.value = heroFullText.slice(0, index + 1)
+    index += 1
+
+    if (index >= heroFullText.length) {
+      window.clearInterval(heroTypingTimer)
+      heroTypingTimer = null
+      showHeroCursor.value = false
+    }
+  }, 55)
+})
+
+onUnmounted(() => {
+  if (heroTypingTimer !== null) {
+    window.clearInterval(heroTypingTimer)
+  }
+})
+
+function handlePreviewCardMove(event: MouseEvent) {
+  const element = previewCardRef.value
+  if (!element) return
+
+  const rect = element.getBoundingClientRect()
+  const relativeX = (event.clientX - rect.left) / rect.width
+  const relativeY = (event.clientY - rect.top) / rect.height
+
+  previewRotateY.value = (relativeX - 0.5) * 16
+  previewRotateX.value = (0.5 - relativeY) * 16
+}
+
+function resetPreviewCard() {
+  previewRotateX.value = 0
+  previewRotateY.value = 0
+}
 
 function switchTab(tab: 'login' | 'register') {
   activeTab.value = tab
@@ -352,5 +403,36 @@ function switchTab(tab: 'login' | 'register') {
 .auth-fade-leave-to {
   opacity: 0;
   transform: translateY(-10px);
+}
+
+.typing-cursor {
+  display: inline-block;
+  width: 0.08em;
+  height: 0.9em;
+  margin-left: 0.08em;
+  background: currentColor;
+  vertical-align: -0.08em;
+  animation: blink 0.9s steps(1) infinite;
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  50.01%, 100% {
+    opacity: 0;
+  }
+}
+
+.login-preview-card {
+  position: relative;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: transform 220ms ease, box-shadow 220ms ease;
+  will-change: transform;
+}
+
+.login-preview-card:hover {
+  box-shadow: 0 34px 70px rgba(0, 0, 0, 0.32);
 }
 </style>
