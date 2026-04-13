@@ -66,7 +66,7 @@
       <div class="border-t border-[#2a1a14] pt-7">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <p class="text-[0.82rem] text-[#7f7168]">
-            © 2024 Avis Digital Curator. Tous droits réservés.
+            © {{ currentYear }} Avis Digital Curator. Tous droits réservés.
           </p>
           <div class="flex flex-wrap items-center gap-5">
             <a href="#" class="text-[0.82rem] text-[#7f7168] hover:text-[#efe7df] transition-colors">Confidentialité</a>
@@ -81,6 +81,8 @@
 <script setup lang="ts">
 interface FooterLink { label: string; href: string }
 interface FooterColumn { title: string; links: FooterLink[] }
+
+const currentYear = new Date().getFullYear()
 
 const columns: FooterColumn[] = [
   {

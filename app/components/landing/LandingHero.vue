@@ -106,7 +106,7 @@
                 <div class="mt-4 h-0.5 w-12 bg-[#c9943a]"></div>
 
                 <p class="mt-4 text-[10px] font-medium uppercase tracking-[0.2em] text-[#c9943a]">
-                  Samedi 24 Juin 2024
+                  {{ heroInvitationDate }}
                 </p>
 
                 <p class="mt-8 max-w-[210px] font-serif text-[0.88rem] italic leading-relaxed text-[#fdfaf6]/80">
@@ -123,6 +123,12 @@
 
 <script setup lang="ts">
 const heroReady = ref(false)
+const heroInvitationDate = new Intl.DateTimeFormat('fr-FR', {
+  weekday: 'long',
+  day: '2-digit',
+  month: 'long',
+  year: 'numeric',
+}).format(new Date(new Date().getFullYear() + 1, 5, 24))
 
 onMounted(() => {
   requestAnimationFrame(() => {
