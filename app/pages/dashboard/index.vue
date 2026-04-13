@@ -44,9 +44,8 @@ definePageMeta({ middleware: 'auth' as any })
 
 const supabase = useSupabaseClient()
 const user = useSupabaseUser()
-const authStore = useAuthStore()
 
-const displayName = computed(() => authStore.displayName)
+const displayName = "Henry AGOSSOU" // À remplacer par le nom réel de l'utilisateur une fois disponible
 const evenements = ref<any[]>([])
 
 onMounted(async () => {
