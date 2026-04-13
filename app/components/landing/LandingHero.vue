@@ -61,7 +61,7 @@
             class="relative w-[260px] sm:w-[290px] lg:w-[320px] aspect-[3/4] overflow-hidden rounded-[20px] border-[10px] border-[#c9943a]/20 bg-[#4a0e0e] p-1 shadow-[0_20px_60px_rgba(74,14,14,0.3)]"
           >
             <div
-              class="absolute inset-0 opacity-[0.16] mix-blend-soft-light"
+              class="absolute inset-0 opacity-[1] mix-blend-soft-light"
               style="
                 background-image: url('/assets/cardboard-flat.png');
                 background-size: 220px 220px;
