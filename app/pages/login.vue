@@ -111,7 +111,7 @@
               <div v-if="activeTab === 'login'" key="login">
                 <div class="mb-5">
                   <h2 class="font-serif text-[#17130f] text-[1.8rem] leading-none font-semibold tracking-[-0.03em]">
-                    Bon retour 👋
+                    Bon retour
                   </h2>
                   <p class="mt-2 text-[#4d4640] text-[0.92rem] leading-[1.65]">
                     Entrez vos identifiants pour accéder à votre tableau de bord.
@@ -202,7 +202,7 @@
               <div v-else key="register">
                 <div class="mb-5">
                   <h2 class="font-serif text-[#17130f] text-[1.8rem] leading-none font-semibold tracking-[-0.03em]">
-                    Bienvenue ✨
+                    Bienvenue
                   </h2>
                   <p class="mt-2 text-[#4d4640] text-[0.92rem] leading-[1.65]">
                     Créez votre compte pour commencer à concevoir vos faire-parts.
