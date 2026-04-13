@@ -54,50 +54,51 @@
       <div class="flex justify-center lg:justify-end">
         <div class="relative">
           <!-- ombre -->
-          <div class="absolute inset-0 translate-y-4 scale-[0.96] rounded-[22px] bg-[#7c1f13]/10 blur-2xl"></div>
+          <div class="absolute inset-0 scale-[1.08] rounded-[30px] bg-[#7f5600]/10 blur-[80px]"></div>
 
           <!-- carte -->
           <div
-            class="relative w-[260px] sm:w-[290px] lg:w-[300px] aspect-[0.76/1] rounded-[20px] bg-[#6d0907] border-[5px] border-[#7f2a17] shadow-[0_20px_40px_rgba(87,23,15,0.18)] overflow-hidden"
+            class="relative w-[260px] sm:w-[290px] lg:w-[320px] aspect-[3/4] overflow-hidden rounded-[20px] border-[10px] border-[#c9943a]/20 bg-[#4a0e0e] p-1 shadow-[0_20px_60px_rgba(74,14,14,0.3)]"
           >
-            <!-- texture légère -->
             <div
-              class="absolute inset-0 opacity-[0.06]"
+              class="absolute inset-0 opacity-[0.16] mix-blend-soft-light"
+              style="
+                background-image: url('/assets/cardboard-flat.png');
+                background-size: 220px 220px;
+                background-repeat: repeat;
+              "
+            ></div>
+            <div
+              class="absolute inset-0 opacity-[0.14]"
               style="
                 background-image:
-                  radial-gradient(circle at 20% 20%, #f4c35d 0, transparent 32%),
-                  radial-gradient(circle at 80% 30%, #f4c35d 0, transparent 28%),
-                  radial-gradient(circle at 30% 80%, #f4c35d 0, transparent 30%),
-                  radial-gradient(circle at 75% 75%, #f4c35d 0, transparent 26%);
+                  radial-gradient(circle at 18% 20%, rgba(201, 148, 58, 0.26) 0, transparent 30%),
+                  radial-gradient(circle at 78% 24%, rgba(201, 148, 58, 0.18) 0, transparent 28%),
+                  radial-gradient(circle at 74% 78%, rgba(255, 249, 239, 0.08) 0, transparent 24%);
               "
             ></div>
 
-            <!-- double cadre -->
-            <div class="absolute inset-[10px] rounded-[14px] border border-[#d3a03f]/80"></div>
-            <div class="absolute inset-[15px] rounded-[10px] border border-[#d3a03f]/30"></div>
+            <div class="relative h-full w-full rounded-[12px] border-2 border-[#c9943a] px-8 py-8 text-center">
+              <div class="absolute top-4 left-4 h-12 w-12 border-l-2 border-t-2 border-[#c9943a]/40"></div>
+              <div class="absolute bottom-4 right-4 h-12 w-12 border-b-2 border-r-2 border-[#c9943a]/40"></div>
 
-            <!-- coins décoratifs -->
-            <div class="absolute top-[22px] left-[22px] w-[36px] h-[36px] border-t border-l border-[#d3a03f]/70"></div>
-            <div class="absolute bottom-[22px] right-[22px] w-[36px] h-[36px] border-b border-r border-[#d3a03f]/70"></div>
+              <div class="relative flex h-full flex-col items-center justify-center">
+                <div class="mb-6 text-[46px] leading-none text-[#c9943a]">♥</div>
 
-            <!-- contenu -->
-            <div class="relative h-full flex flex-col items-center justify-start text-center px-6 pt-14">
-              <!-- coeur -->
-              <div class="text-[#d3a03f] text-[28px] leading-none">♥</div>
+                <h2 class="font-serif text-[1.9rem] font-bold leading-[1.15] text-white">
+                  Mariage de Jean &amp; Marie
+                </h2>
 
-              <h2 class="mt-6 font-serif text-white text-[1.5rem] leading-[1.1] font-semibold">
-                Mariage de Jean &amp;<br />Marie
-              </h2>
+                <div class="mt-4 h-0.5 w-12 bg-[#c9943a]"></div>
 
-              <div class="mt-6 text-[#d3a03f]/85 text-[10px] uppercase tracking-[0.34em] font-medium">
-                Samedi 24 Juin 2024
+                <p class="mt-4 text-[10px] font-medium uppercase tracking-[0.2em] text-[#c9943a]">
+                  Samedi 24 Juin 2024
+                </p>
+
+                <p class="mt-8 max-w-[210px] font-serif text-[0.88rem] italic leading-relaxed text-[#fdfaf6]/80">
+                  "Nous sommes ravis de vous inviter à célébrer notre union..."
+                </p>
               </div>
-
-              <div class="mt-6 w-8 h-px bg-[#d3a03f]/50"></div>
-
-              <p class="mt-6 text-white/90 italic text-[0.82rem] leading-[1.9] max-w-[200px] font-serif">
-                "Nous sommes ravis de vous inviter à célébrer notre union..."
-              </p>
             </div>
           </div>
         </div>
