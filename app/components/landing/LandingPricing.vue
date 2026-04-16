@@ -1,24 +1,24 @@
 <template>
-  <section id="tarifs" class="bg-[#f0ebe3] py-20 lg:py-24">
+  <section id="tarifs" class="bg-[#f0ebe3] py-12 lg:py-16">
     <div class="max-w-[1200px] mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Header -->
-      <div class="text-center mb-14 lg:mb-16">
+      <div class="text-center mb-10">
         <h2
-          class="font-serif text-[#17130f] text-[2.8rem] sm:text-[3.5rem] lg:text-[4rem] leading-[1] tracking-[-0.03em] font-semibold"
+          class="font-serif text-[#17130f] text-[1.75rem] sm:text-[2.1rem] lg:text-[2.4rem] leading-[1] tracking-[-0.03em] font-semibold"
         >
           Des tarifs transparents
         </h2>
-        <p class="mt-4 text-[#5c554d] text-[1.05rem] sm:text-[1.15rem] leading-[1.6]">
+        <p class="mt-3 text-[#5c554d] text-[0.9rem] leading-[1.6]">
           Choisissez le plan qui correspond à l'ampleur de votre célébration.
         </p>
       </div>
 
       <!-- Pricing cards -->
-      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-7 items-stretch">
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 items-stretch">
         <article
           v-for="plan in plans"
           :key="plan.name"
-          class="relative rounded-[22px] bg-[#fbfaf8] px-10 pt-10 pb-9 min-h-[390px] border"
+          class="relative rounded-[18px] bg-[#fbfaf8] px-6 pt-7 pb-6 border"
           :class="
             plan.featured
               ? 'border-[#d09a37] shadow-[0_10px_30px_rgba(0,0,0,0.03)]'
@@ -26,44 +26,39 @@
           "
         >
           <!-- Badge -->
-          <div
-            v-if="plan.featured"
-            class="absolute -top-12 left-1/2 -translate-x-1/2"
-          >
+          <div v-if="plan.featured" class="absolute -top-4 left-1/2 -translate-x-1/2">
             <span
-              class="inline-flex items-center justify-center h-[26px] px-5 rounded-full bg-[#cf9a3a] text-white text-[0.82rem] font-bold uppercase tracking-[0.06em]"
+              class="inline-flex items-center justify-center px-4 py-1 rounded-full bg-[#cf9a3a] text-white text-[0.72rem] font-bold uppercase tracking-[0.06em]"
             >
               Populaire
             </span>
           </div>
 
           <!-- Name -->
-          <h3 class="text-[#17130f] text-[1.15rem] sm:text-[1.9rem] font-semibold mb-5">
+          <h3 class="text-[#17130f] text-[1rem] font-semibold mb-3">
             {{ plan.name }}
           </h3>
 
           <!-- Price -->
-          <div class="flex items-end gap-2 mb-8">
-            <span
-              class="font-serif text-[#17130f] text-[2.25rem] sm:text-[3.2rem] leading-none font-semibold tracking-[-0.03em]"
-            >
+          <div class="flex items-end gap-1.5 mb-5">
+            <span class="font-serif text-[#17130f] text-[1.9rem] sm:text-[2.2rem] leading-none font-semibold tracking-[-0.03em]">
               {{ plan.price }}
             </span>
-            <span class="text-[#534d46] text-[1rem] sm:text-[1.05rem] mb-1">
+            <span class="text-[#534d46] text-[0.88rem] mb-0.5">
               {{ plan.period }}
             </span>
           </div>
 
           <!-- Features -->
-          <ul class="space-y-5 mb-10">
+          <ul class="space-y-3 mb-6">
             <li
               v-for="feat in plan.features"
               :key="feat.label"
-              class="flex items-center gap-3 text-[1rem] sm:text-[1.08rem]"
+              class="flex items-center gap-2.5 text-[0.88rem]"
               :class="feat.included ? 'text-[#5a534c]' : 'text-[#bcb4aa]'"
             >
               <span
-                class="w-[18px] h-[18px] rounded-full border flex items-center justify-center text-[11px] flex-shrink-0"
+                class="w-[16px] h-[16px] rounded-full border flex items-center justify-center text-[10px] flex-shrink-0"
                 :class="
                   feat.included
                     ? 'border-[#c68b22] text-[#c68b22]'
@@ -79,7 +74,7 @@
           <!-- CTA -->
           <NuxtLink
             :to="plan.link"
-            class="mt-auto block w-full text-center h-[54px] leading-[54px] rounded-[14px] font-semibold text-[1rem] transition"
+            class="mt-auto block w-full text-center h-[40px] leading-[40px] rounded-[12px] font-semibold text-[0.88rem] transition"
             :class="
               plan.featured
                 ? 'bg-[#cf9a3a] text-white hover:brightness-95'
