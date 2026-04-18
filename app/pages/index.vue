@@ -25,11 +25,12 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 
-const user = useSupabaseUser()
+const auth = useAuth()
 let landingObserver: IntersectionObserver | null = null
 
 onMounted(() => {
-  if (user.value) navigateTo('/dashboard')
+  auth.charger()
+  if (auth.isLoggedIn.value) navigateTo('/dashboard')
 
   const revealElements = Array.from(document.querySelectorAll<HTMLElement>('.landing-reveal'))
   if (!revealElements.length) return

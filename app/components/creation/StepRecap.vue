@@ -31,7 +31,7 @@
           class="w-full object-cover"
         />
       </div>
-login
+
       <!-- Erreur -->
       <p v-if="error" class="text-xs text-red-400 mb-4 text-center">{{ error }}</p>
 
@@ -169,12 +169,18 @@ async function soumettreModification() {
 async function validerEtPayer() {
   // Sauvegarde l'événement en base puis redirige vers le paiement
   const supabase = useSupabaseClient()
-  const user = useSupabaseUser()
+  const auth = useAuth()
+  auth.charger()
+
+  if (!auth.utilisateur.value) {
+    error.value = 'Vous devez être connecté.'
+    return
+  }
 
   const { data, error: dbError } = await supabase
     .from('evenements')
     .insert({
-      user_id: user.value!.id,
+      user_id: auth.utilisateur.value.id,
       type: store.state.type ?? '',
       titre: store.state.titre ?? '',
       date_evenement: store.state.date_evenement ?? '',

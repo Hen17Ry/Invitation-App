@@ -13,15 +13,15 @@
 <script setup lang="ts">
 definePageMeta({ layout: false })
 
-const supabase = useSupabaseClient()
 const router = useRouter()
 
-onMounted(async () => {
-  const { data: { session } } = await supabase.auth.getSession()
-  if (session) {
-    await router.push('/dashboard')
+onMounted(() => {
+  const auth = useAuth()
+  auth.charger()
+  if (auth.isLoggedIn.value) {
+    router.push('/dashboard')
   } else {
-    await router.push('/login')
+    router.push('/login')
   }
 })
 </script>

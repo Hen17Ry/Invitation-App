@@ -40,21 +40,21 @@
 </template>
 
 <script setup lang="ts">
-definePageMeta({ middleware: 'auth' as any })
+definePageMeta({ middleware: 'auth' })
 
 const supabase = useSupabaseClient()
-const user = useSupabaseUser()
+const auth = useAuth()
+auth.charger()
 
-const newLocal = "Henry GOSSOU"
-const displayName = newLocal
+const displayName = computed(() => auth.displayName.value || 'Utilisateur')
 const evenements = ref<any[]>([])
 
 onMounted(async () => {
-  if (!user.value) return
+  if (!auth.utilisateur.value) return
   const { data } = await supabase
     .from('evenements')
     .select('*')
-    .eq('user_id', user.value.id)
+    .eq('user_id', auth.utilisateur.value.id)
     .order('created_at', { ascending: false })
   evenements.value = data || []
 })

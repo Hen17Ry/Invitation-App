@@ -124,6 +124,7 @@
                 <button
                   type="button"
                   :disabled="loading"
+                  @click="handleGoogleAuth"
                   class="flex h-[46px] w-full items-center justify-center gap-3 rounded-[14px] bg-white text-[#17130f] text-[0.9rem] font-medium shadow-[0_1px_0_rgba(0,0,0,0.04)] border border-[#eee4d7] disabled:opacity-60"
                 >
                   <span class="inline-flex h-6 w-6 items-center justify-center rounded-[5px] bg-black text-white text-[11px] font-bold">G</span>
@@ -138,7 +139,7 @@
                   <div class="h-px flex-1 bg-[#eadfce]"></div>
                 </div>
 
-                <form class="space-y-4">
+                <form class="space-y-4" @submit.prevent="handleLogin">
                   <div>
                     <label class="mb-1.5 block text-[#3b342d] text-[0.78rem] font-semibold uppercase tracking-wide">
                       Adresse email
@@ -215,6 +216,7 @@
                 <button
                   type="button"
                   :disabled="loading"
+                  @click="handleGoogleAuth"
                   class="flex h-[46px] w-full items-center justify-center gap-3 rounded-[14px] bg-white text-[#17130f] text-[0.9rem] font-medium shadow-[0_1px_0_rgba(0,0,0,0.04)] border border-[#eee4d7] disabled:opacity-60"
                 >
                   <span class="inline-flex h-6 w-6 items-center justify-center rounded-[5px] bg-black text-white text-[11px] font-bold">G</span>
@@ -229,7 +231,7 @@
                   <div class="h-px flex-1 bg-[#eadfce]"></div>
                 </div>
 
-                <form class="space-y-4">
+                <form class="space-y-4" @submit.prevent="handleRegister">
                   <div>
                     <label class="mb-1.5 block text-[#3b342d] text-[0.78rem] font-semibold uppercase tracking-wide">
                       Nom complet
@@ -342,13 +344,21 @@ const showLoginPassword = ref(false)
 const showRegisterPassword = ref(false)
 const loginForm = ref({ email: '', password: '' })
 const registerForm = ref({ fullName: '', email: '', password: '', confirmPassword: '' })
-let heroTypingTimer: number | null = null
+let heroTypingTimer: number | undefined = undefined
 
 const previewCardStyle = computed(() => ({
   transform: `rotateX(${previewRotateX.value}deg) rotateY(${previewRotateY.value}deg) translateY(-6px) scale(1.01)`,
 }))
 
 onMounted(() => {
+  // Redirige si déjà connecté
+  const auth = useAuth()
+  auth.charger()
+  if (auth.isLoggedIn.value) {
+    navigateTo('/dashboard')
+    return
+  }
+
   let index = 0
   heroTypingTimer = window.setInterval(() => {
     heroTypedText.value = heroFullText.slice(0, index + 1)
@@ -356,14 +366,14 @@ onMounted(() => {
 
     if (index >= heroFullText.length) {
       window.clearInterval(heroTypingTimer)
-      heroTypingTimer = null
+      heroTypingTimer = undefined
       showHeroCursor.value = false
     }
   }, 55)
 })
 
 onUnmounted(() => {
-  if (heroTypingTimer !== null) {
+  if (heroTypingTimer !== undefined) {
     window.clearInterval(heroTypingTimer)
   }
 })
@@ -388,6 +398,75 @@ function resetPreviewCard() {
 function switchTab(tab: 'login' | 'register') {
   activeTab.value = tab
   error.value = ''
+}
+
+// ── Auth handlers ──────────────────────────────
+
+async function handleLogin() {
+  error.value = ''
+  loading.value = true
+
+  try {
+    const data = await $fetch<{ token: string; user: any }>('/api/auth/login', {
+      method: 'POST',
+      body: {
+        email: loginForm.value.email,
+        password: loginForm.value.password,
+      },
+    })
+
+    const auth = useAuth()
+    auth.sauvegarder(data.user, data.token)
+    await navigateTo('/dashboard')
+  } catch (err: any) {
+    error.value = err?.data?.message || 'Erreur de connexion. Vérifiez vos identifiants.'
+  } finally {
+    loading.value = false
+  }
+}
+
+async function handleRegister() {
+  error.value = ''
+
+  if (!registerForm.value.fullName.trim()) {
+    error.value = 'Veuillez entrer votre nom complet.'
+    return
+  }
+
+  if (registerForm.value.password.length < 8) {
+    error.value = 'Le mot de passe doit contenir au moins 8 caractères.'
+    return
+  }
+
+  if (registerForm.value.password !== registerForm.value.confirmPassword) {
+    error.value = 'Les mots de passe ne correspondent pas.'
+    return
+  }
+
+  loading.value = true
+
+  try {
+    const data = await $fetch<{ token: string; user: any }>('/api/auth/register', {
+      method: 'POST',
+      body: {
+        email: registerForm.value.email,
+        password: registerForm.value.password,
+        nom_complet: registerForm.value.fullName,
+      },
+    })
+
+    const auth = useAuth()
+    auth.sauvegarder(data.user, data.token)
+    await navigateTo('/dashboard')
+  } catch (err: any) {
+    error.value = err?.data?.message || "Erreur lors de l'inscription."
+  } finally {
+    loading.value = false
+  }
+}
+
+function handleGoogleAuth() {
+  error.value = 'Connexion Google bientôt disponible.'
 }
 </script>
 

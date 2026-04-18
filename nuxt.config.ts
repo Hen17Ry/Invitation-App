@@ -14,7 +14,7 @@ export default defineNuxtConfig({
   redirectOptions: {
     login: '/login',
     callback: '/confirm',
-    exclude: ['/i/*', '/', '/login', '/confirm'],
+    exclude: ['/**'],
   },
   cookieOptions: {
     maxAge: 60 * 60 * 24 * 7,
@@ -60,6 +60,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+    jwtSecret: process.env.JWT_SECRET,
     auth0ClientSecret: process.env.AUTH0_CLIENT_SECRET,
     openrouterApiKey: process.env.OPENROUTER_API_KEY,
     anthropicApiKey: process.env.ANTHROPIC_API_KEY,
